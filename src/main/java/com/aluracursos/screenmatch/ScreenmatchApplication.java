@@ -3,6 +3,7 @@ package com.aluracursos.screenmatch;
 import com.aluracursos.screenmatch.model.DatosEpisodio;
 import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
+import com.aluracursos.screenmatch.principal.Principal;
 import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConvierteDatos;
 import org.springframework.boot.CommandLineRunner;
@@ -16,29 +17,15 @@ import java.util.List;
 public class ScreenmatchApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ScreenmatchApplication.class, args);
+        SpringApplication.run(ScreenmatchApplication.class, args);
 	}
 
     @Override
     public void run(String... args) throws Exception {
-        var consumoApi = new ConsumoAPI();
-        var json = consumoApi.obtenerDatos("https://www.omdbapi.com/?t=Game%20of%20Thrones&apikey=47fb563a");
-        // var json = consumoApi.obtenerDatos("https://coffee.alexflipnote.dev/random.json");
-        System.out.println(json);
-        ConvierteDatos conversor = new ConvierteDatos();
-        var datos = conversor.obtenerDatos(json, DatosSerie.class);
-        System.out.println(datos);
-        json= consumoApi.obtenerDatos("https://www.omdbapi.com/?t=Game%20of%20Thrones&Season=1&episode=1&apikey=47fb563a");
-        DatosEpisodio episodios = conversor.obtenerDatos(json, DatosEpisodio.class);
-        System.out.println(episodios);
+        Principal principal = new Principal();
+        principal.muestraElMenu();
 
-        List<DatosTemporadas> temporadas = new ArrayList<>();
-        for (int i = 1; i <= datos.totalDeTemporadas() ; i++) {
-            json= consumoApi.obtenerDatos("https://www.omdbapi.com/?t=Game%20of%20Thrones&Season="+i+"&apikey=47fb563a");
-            var datosTemporadas = conversor.obtenerDatos(json, DatosTemporadas.class);
-            temporadas.add(datosTemporadas);
-        }
-        temporadas.forEach(System.out::println);
+
 
     }
 }
